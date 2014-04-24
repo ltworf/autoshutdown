@@ -5,45 +5,25 @@
 \- Daemon to turn off the computer when there are no users
 
 .SH SYNOPSIS
-.B "/etc/init.d/autoshutdown "
+.B "/etc/init.d/autoshutdown"
 [
 .B options
 ]
 
 .SH DESCRIPTION
 
-\fBAutoshutdown\fP is a daemon, it checks if there are users logged in on each delay. If there are 0 users it will switch to runlevel 0.
+\fBAutoshutdown\fP is a daemon, it checks if there are users logged in on each delay. If there are 0 users it will run a command (init 0 by default).
 
 The daemon will count the users. If they are more than 0 it will go to sleep for a certain amount of time.
 If there are 0 users it may give another chance to login, or switch to runlevel 0, depending on configuration.
 
-.SH OPTIONS
-.TP
-\fBstart\fR
-Starts the daemon
-
-.TP
-\fBstop\fR
-Kills the daemon
-
-.TP
-\fBrestart\fR
-Restarts the daemon, forcing it to read again the configuration file.
-
 .SH Configuration
-Configuration file is /etc/autoshutdown.conf, and it has 2 options:
-.TP
-\fBdelay\fR
-Expressed in seconds, this specify how many seconds the daemon must sleep between a check and another.
-
-.TP
-\fBattempts\fR
-When there are 0 users, a var will be increased. If this var is equal to the number of attempts specified, the daemon will switch to runlevel 0.
+Configuration file is /etc/autoshutdown.conf, but can be overridden by setting CONFFILE
 
 .SH FILES
 .TP
-/usr/sbin/autoshutdown
-Script that does the check. Don't execute it directly
+/usr/bin/autoshutdown
+Script that does the check.
 
 .TP
 /etc/init.d/autoshutdown
