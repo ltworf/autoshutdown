@@ -8,7 +8,7 @@ then
 	exit 0;
 fi
 
-if [ "$dad" = "$vuoto" ]
+if [ -z "$dad" ]
 then
 	echo "Start this program using /etc/init.d/autoshutdown start";
 	exit 0;
@@ -21,7 +21,8 @@ used_attempts=0;
 echo "Delay is set to $delay seconds"
 echo "Will do $attempts attempts"
 
-	while [ true ]; do
+	while true
+	do
 		sleep $delay;
 		users=`who -q | grep "users" | cut -d = -f 2`
 		
