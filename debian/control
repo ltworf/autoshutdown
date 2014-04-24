@@ -1,0 +1,15 @@
+Source: autoshutdown
+Section: admin
+Priority: optional
+Maintainer: Salvo 'LtWorf' Tomaselli <tiposchi@tiscali.it>
+Build-Depends: debhelper (>= 7.0.50~)
+Standards-Version: 3.9.3
+Homepage: https://github.com/ltworf/autoshutdown/
+
+Package: autoshutdown
+Architecture: any
+Depends: ${misc:Depends}
+Description: Shuts the machine down when there are no logged users
+ It will check for the amount of logged in users and then after a while
+ shut down the machine or execute another action.
+
