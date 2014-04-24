@@ -1,19 +1,42 @@
-#! /bin/bash
-# Script by Salvo 'LtWorf' Tomaselli.
+#!/bin/bash
+
+### BEGIN INIT INFO
+# Provides:          autoshutdown
+# Required-Start:    
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+NAME=autoshutdown
 
 case $1 in
-    start )
-        echo "Starting autoshutdown daemon";
-	autoshutdown &;;
-    stop )
-	echo "Stopping autoshutdown daemon...";
-	killall -9 autoshutdown >/dev/null ;;
-    reload )
-        echo "todo" ;;
-    force-reload )
-        echo "todo";;
-    restart )
-        echo "todo";;
-    * )
-	echo "Usage: /etc/init.d/autoshutdown {start|stop|reload|force-reload|restart}";; 
+	start )
+		echo Starting $NAME
+		exec start-stop-daemon --pidfile /run/$NAME -b -x /bin/bash --start "/usr/sbin/$NAME"
+		;;
+	stop )
+		echo Stopping $NAME
+		exec start-stop-daemon --pidfile /run/$NAME -x /bin/bash --stop
+		;;
+	force-reload )
+		exec service $NAME restart
+		;;
+	restart )
+		service $NAME stop
+		exec service $NAME start
+		;;
+	status )
+		start-stop-daemon --pidfile /run/$NAME -x /bin/bash --status
+		STATUS=$?
+		if [ "$STATUS" = "0" ]
+		then
+			echo $NAME is running
+		else
+			echo $NAME is not running
+		fi
+		;;
+	* )
+		echo "Usage: /etc/init.d/autoshutdown {start|stop|status|force-reload|restart}"
+		;; 
 esac

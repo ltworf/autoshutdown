@@ -1,6 +1,22 @@
 #!/bin/bash
 # Script by Salvo 'LtWorf' Tomaselli.
 
+user=`whoami`
+if [ $user != "root" ]
+then
+	echo "Must be root"
+	exit 5
+fi
+
+
+if [ -e /run/autoshutdown ]
+then
+	echo /run/autoshutdown is already there
+	exit 2
+fi
+
+echo $$ > /run/autoshutdown
+
 if [ -z $CONFFILE ]
 then
 	CONFFILE=/etc/autoshutdown.conf
