@@ -1,0 +1,20 @@
+#! /bin/bash
+# Script by Salvo 'LtWorf' Tomaselli.
+
+case $1 in
+    start )
+        echo "Starting autoshutdown daemon";
+	export dad="d";
+	autoshutdown &;;
+    stop )
+	echo "Stopping autoshutdown daemon...";
+	killall -9 autoshutdown >/dev/null ;;
+    reload )
+        echo "todo" ;;
+    force-reload )
+        echo "todo";;
+    restart )
+        echo "todo";;
+    * )
+	echo "Usage: /etc/init.d/autoshutdown {start|stop|reload|force-reload|restart}";; 
+esac
