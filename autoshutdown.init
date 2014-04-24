@@ -4,7 +4,6 @@
 case $1 in
     start )
         echo "Starting autoshutdown daemon";
-	export dad="d";
 	autoshutdown &;;
     stop )
 	echo "Stopping autoshutdown daemon...";

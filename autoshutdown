@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 # Script by Salvo 'LtWorf' Tomaselli.
 
 user=`whoami`
@@ -8,33 +8,34 @@ then
 	exit 0;
 fi
 
-if [ -z "$dad" ]
+if [ -e /etc/autoshutdown.conf ]
 then
-	echo "Start this program using /etc/init.d/autoshutdown start";
-	exit 0;
+	. /etc/autoshutdown.conf
+else
+	DELAY=120
+	ATTEMPTS=8
+	COMMAND="init 0"
 fi
 
-delay=`cat /etc/autoshutdown.conf | grep "delay=" | cut -d = -f 2`
-attempts=`cat /etc/autoshutdown.conf | grep "attempts=" | cut -d = -f 2`
-used_attempts=0;
+used_attempts=0
 
-echo "Delay is set to $delay seconds"
-echo "Will do $attempts attempts"
+echo "Delay is set to $DELAY seconds"
+echo "Will do $ATTEMPTS attempts"
 
 	while true
 	do
-		sleep $delay;
-		users=`who -q | grep "users" | cut -d = -f 2`
+		sleep $DELAY;
+		users=`LANG=c who -q | grep "users" | cut -d = -f 2`
 		
 		if [ $users = '0' ] 
 		then			
-			if [ $used_attempts = $attempts ]
+			if [ $used_attempts = $ATTEMPTS ]
 			then
-				init 0
+				$COMMAND
 			fi
 			used_attempts=`echo $used_attempts+1 | bc`			
 		else
-			used_attempts=0;
-		fi;
+			used_attempts=0
+		fi
 
-	done;
+	done
