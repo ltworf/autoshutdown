@@ -1,16 +1,14 @@
 #!/bin/bash
 # Script by Salvo 'LtWorf' Tomaselli.
 
-user=`whoami`
-if [ $user != "root" ]
+if [ -z $CONFFILE ]
 then
-	echo "Must be root";
-	exit 0;
+	CONFFILE=/etc/autoshutdown.conf
 fi
 
-if [ -e /etc/autoshutdown.conf ]
+if [ -e $CONFFILE ]
 then
-	. /etc/autoshutdown.conf
+	. $CONFFILE
 else
 	DELAY=120
 	ATTEMPTS=8
