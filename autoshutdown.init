@@ -14,12 +14,10 @@ NAME=autoshutdown
 
 case $1 in
 	start )
-		echo Starting $NAME
 		start-stop-daemon --pidfile /run/$NAME -b -x /bin/bash --start "/usr/sbin/$NAME"
 		log_end_msg $?
 		;;
 	stop )
-		echo Stopping $NAME
 		start-stop-daemon --pidfile /run/$NAME -x /bin/bash --stop
 		log_end_msg $?
 		rm -rf /run/$NAME
@@ -32,7 +30,8 @@ case $1 in
 		$0 start
 		;;
 	status )
-		exec status_of_proc -p /run/$NAME /bin/bash
+		status_of_proc -p /run/$NAME /bin/bash
+		exit $?
 		;;
 	* )
 		echo "Usage: service $NAME {start|stop|status|force-reload|restart}"
