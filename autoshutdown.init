@@ -10,33 +10,31 @@
 
 NAME=autoshutdown
 
+. /lib/lsb/init-functions
+
 case $1 in
 	start )
 		echo Starting $NAME
-		exec start-stop-daemon --pidfile /run/$NAME -b -x /bin/bash --start "/usr/sbin/$NAME"
+		start-stop-daemon --pidfile /run/$NAME -b -x /bin/bash --start "/usr/sbin/$NAME"
+		log_end_msg $?
 		;;
 	stop )
 		echo Stopping $NAME
-		exec start-stop-daemon --pidfile /run/$NAME -x /bin/bash --stop
+		start-stop-daemon --pidfile /run/$NAME -x /bin/bash --stop
+		log_end_msg $?
+		rm -rf /run/$NAME
 		;;
 	force-reload )
-		exec service $NAME restart
+		$0 restart
 		;;
 	restart )
-		service $NAME stop
-		exec service $NAME start
+		$0 stop
+		$0 start
 		;;
 	status )
-		start-stop-daemon --pidfile /run/$NAME -x /bin/bash --status
-		STATUS=$?
-		if [ "$STATUS" = "0" ]
-		then
-			echo $NAME is running
-		else
-			echo $NAME is not running
-		fi
+		exec status_of_proc -p /run/$NAME /bin/bash
 		;;
 	* )
-		echo "Usage: /etc/init.d/autoshutdown {start|stop|status|force-reload|restart}"
+		echo "Usage: service $NAME {start|stop|status|force-reload|restart}"
 		;; 
 esac
