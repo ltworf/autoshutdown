@@ -8,7 +8,6 @@ then
 	exit 5
 fi
 
-
 if [ -e /run/autoshutdown ]
 then
 	echo /run/autoshutdown is already there
@@ -40,14 +39,16 @@ echo "Will do $ATTEMPTS attempts"
 	do
 		sleep $DELAY;
 		users=`LANG=c who -q | grep "users" | cut -d = -f 2`
-		
-		if [ $users = '0' ] 
-		then			
+		echo Users: $users
+		if [ $users = '0' ]
+		then
 			if [ $used_attempts = $ATTEMPTS ]
 			then
-				$COMMAND
+				echo Running $COMMAND
+				echo "$COMMAND" | bash
 			fi
-			used_attempts=`echo $used_attempts+1 | bc`			
+			echo Attempts left: $used_attempts
+			used_attempts=`echo $used_attempts + 1 | bc`
 		else
 			used_attempts=0
 		fi
